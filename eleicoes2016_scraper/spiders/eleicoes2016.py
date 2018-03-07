@@ -20,6 +20,9 @@ class Eleicoes2016Spider(CrawlSpider):
             eleito = response.css('div.badge::text').extract_first() == 'Eleito'
 
             if (re.match(r'Vereador[a]?', cargo) and eleito):
+                infoCandidato = response.css('div.info-candidato div')
+                nome = infoCandidato[0].css('div::text')[1].extract()
+
                 yield {
-                    'badge': response.css('div.badge::text').extract_first(),
+                    'nome': nome,
                 }
