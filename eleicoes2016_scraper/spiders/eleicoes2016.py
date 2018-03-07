@@ -9,7 +9,7 @@ from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 class Eleicoes2016Spider(CrawlSpider):
     name = 'eleicoes2016'
     allowed_domains = ['www.eleicoes2016.com.br']
-    start_urls = ['http://www.eleicoes2016.com.br/']
+    start_urls = ['https://www.eleicoes2016.com.br/']
     rules = [
         Rule(LxmlLinkExtractor(allow = [r'.*']), callback = 'parse_obj', follow = True),
         Rule(LxmlLinkExtractor(deny = [r'.+\/candidato.+']), follow = False),
