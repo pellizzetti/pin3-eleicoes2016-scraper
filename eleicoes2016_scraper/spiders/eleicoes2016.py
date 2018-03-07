@@ -12,7 +12,6 @@ class Eleicoes2016Spider(CrawlSpider):
     start_urls = ['https://www.eleicoes2016.com.br/']
     rules = [
         Rule(LxmlLinkExtractor(allow = [r'.*']), callback = 'parse_obj', follow = True),
-        Rule(LxmlLinkExtractor(deny = [r'.+\/candidato.+']), follow = False),
     ]
 
     def parse_obj(self, response):
@@ -21,9 +20,16 @@ class Eleicoes2016Spider(CrawlSpider):
         eleito = response.css('div.badge::text').extract_first() == 'Eleito'
 
         if (vereador and eleito):
-            infoCandidato = response.css('div.info-candidato div')
-            nome = infoCandidato[0].css('div::text')[1].extract()
+            infosCandidato = response.css('div.info-candidato div')
+            candidatoData = {}
             
-            yield {
-                'nome': nome,
-            }
+            for infoCandidato in infosCandidato:
+                info = infoCandidato.css('div::text').extract()
+
+                if (info and len(info) >= 2):
+                    chave = info[0]
+                    valor = info[1]
+
+                    candidatoData[''+chave] = valor
+            
+            yield candidatoData
