@@ -14,8 +14,10 @@ class Eleicoes2016Spider(CrawlSpider):
         allow=[r'.*']), callback='parse_obj', follow=True),)
 
     def parse_obj(self, response):
-        badge = response.css('div.badge::text').extract_first()
-        if badge == 'Eleito':
+            cargo = response.css('div.cargo-upper::text').extract_first() or ''
+            eleito = response.css('div.badge::text').extract_first() == 'Eleito'
+
+            if (re.match(r'Vereador[a]?', cargo) and eleito):
             yield {
                 'badge': response.css('div.badge::text').extract_first(),
             }
