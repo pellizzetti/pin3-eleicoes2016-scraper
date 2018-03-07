@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import re
+
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 
