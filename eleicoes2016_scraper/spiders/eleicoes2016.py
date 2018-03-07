@@ -17,11 +17,10 @@ class Eleicoes2016Spider(CrawlSpider):
 
     def parse_obj(self, response):
         cargo = response.css('div.cargo-upper::text').extract_first() or ''
+        vereador = re.match(r'Vereador[a]?', cargo)
         eleito = response.css('div.badge::text').extract_first() == 'Eleito'
 
-        if (re.match(r'Vereador[a]?', cargo) and eleito):
-            infoCandidato = response.css('div.info-candidato div')
-            nome = infoCandidato[0].css('div::text')[1].extract()
+        if (vereador and eleito):
 
             yield {
                 'nome': nome,
